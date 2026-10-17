@@ -1,2 +1,4 @@
 __pycache__/
 results/
+mnist_data/
+results_mnist_*/data/
