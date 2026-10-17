@@ -20,3 +20,11 @@ MNIST 下载被当前环境的网络代理以 HTTP 403 拒绝（torchvision 官�
 使用 PyTorch 取代已废弃的 Theano/Lasagne；默认实验规模和 epoch 可配置；当前尚未获得 MNIST，故没有冒充论文数值。论文使用更大规模数据、更多训练轮次和具体数据集设置，需在网络可用后重新运行并比较。
 
 补充：脚本现在还会生成 `target_training_curves.png` 和 `attack_confusion_matrix.png`；smoke 输出已再次验证这些文件可生成。完整 MNIST 运行仍取决于环境发布后的数据下载权限。
+
+## 真实 MNIST 结果
+
+通过 `raw.githubusercontent.com/fgnt/mnist` 镜像导入并校验了真实 IDX 文件：训练图片 60000 张、测试图片 10000 张，均为 28×28；标签数量分别为 60000 和 10000，标签范围均为 0–9。SHA-256 和 magic number 见 `mnist_validation.json`。
+
+配置为目标成员 1000、目标非成员 1000、影子池训练 1000、影子池非成员 1000，固定种子 21312，CPU，3 epochs。2 个影子模型先行实验：目标训练准确率 0.655，目标测试准确率 0.485，攻击准确率 0.5065，Precision 0.5070，Recall 0.4680，F1 0.3631，ROC-AUC 0.5254。10 个影子模型实验：目标训练准确率 0.921，目标测试准确率 0.850，攻击准确率 0.5320，Precision 0.5209，Recall 0.7970，F1 0.6300，ROC-AUC 0.5325。
+
+`split_indices.npz` 的四组索引两两交集均为 0（4000 个唯一索引），因此没有发现成员数据泄漏。攻击准确率和 AUC 只略高于随机基线 50%/0.5，说明该小规模、低 epoch 设置下成员信号较弱；不能直接等同于论文原始规模结果。
