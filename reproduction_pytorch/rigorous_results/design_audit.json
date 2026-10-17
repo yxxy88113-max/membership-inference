@@ -1,0 +1,47 @@
+{
+  "same_target_metrics_for_nshadow": [
+    {
+      "seed": 21312,
+      "epochs": 20,
+      "target_train_unique": 1,
+      "target_test_unique": 1,
+      "gap_unique": 1
+    },
+    {
+      "seed": 21312,
+      "epochs": 50,
+      "target_train_unique": 1,
+      "target_test_unique": 1,
+      "gap_unique": 1
+    },
+    {
+      "seed": 21313,
+      "epochs": 20,
+      "target_train_unique": 1,
+      "target_test_unique": 1,
+      "gap_unique": 1
+    },
+    {
+      "seed": 21313,
+      "epochs": 50,
+      "target_train_unique": 1,
+      "target_test_unique": 1,
+      "gap_unique": 1
+    },
+    {
+      "seed": 21314,
+      "epochs": 20,
+      "target_train_unique": 1,
+      "target_test_unique": 1,
+      "gap_unique": 1
+    },
+    {
+      "seed": 21314,
+      "epochs": 50,
+      "target_train_unique": 1,
+      "target_test_unique": 1,
+      "gap_unique": 1
+    }
+  ],
+  "all_equal": true
+}

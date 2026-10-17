@@ -22,3 +22,13 @@ python run_experiment.py --config config.json --output results
 ```
 
 `mnist_validation.json` 记录了镜像文件的 IDX magic number、样本数、尺寸和 SHA-256。
+
+受控多种子实验（目标模型只训练一次，随后复用到 2/10 个影子模型）运行：
+
+```bash
+python rigorous_experiment.py --config config.json \
+  --data-root results_mnist_10/data --output rigorous_results \
+  --epochs 20,50 --seeds 21312,21313,21314
+```
+
+结果写入 `rigorous_results/controlled_results.csv`、`comparison_table.csv`、`comparison_summary.csv`，并生成目标曲线和影子模型数量对比图。
