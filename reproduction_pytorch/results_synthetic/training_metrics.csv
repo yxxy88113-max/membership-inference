@@ -1,0 +1,4 @@
+epoch,loss,accuracy,split
+1,2.628076515197754,0.1,target_train
+1,,0.14,target_train_eval
+1,,0.065,target_test_eval

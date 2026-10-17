@@ -1,0 +1,1 @@
+{"seed":21312,"target_train":1000,"target_test":1000,"shadow_train":1000,"shadow_test":1000,"n_shadow":10,"epochs":3,"batch_size":128,"hidden":50,"lr":0.01}
