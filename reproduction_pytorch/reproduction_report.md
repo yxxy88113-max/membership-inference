@@ -18,3 +18,5 @@ MNIST 下载被当前环境的网络代理以 HTTP 403 拒绝（torchvision 官�
 
 ## 与论文的差异与限制
 使用 PyTorch 取代已废弃的 Theano/Lasagne；默认实验规模和 epoch 可配置；当前尚未获得 MNIST，故没有冒充论文数值。论文使用更大规模数据、更多训练轮次和具体数据集设置，需在网络可用后重新运行并比较。
+
+补充：脚本现在还会生成 `target_training_curves.png` 和 `attack_confusion_matrix.png`；smoke 输出已再次验证这些文件可生成。完整 MNIST 运行仍取决于环境发布后的数据下载权限。

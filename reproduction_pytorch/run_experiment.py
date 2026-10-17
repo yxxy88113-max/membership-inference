@@ -43,6 +43,7 @@ def main():
  seed(cfg['seed']); device=torch.device('cpu'); t=time.time(); sets=load_data(out,cfg,cfg['seed'],args.synthetic); (tx,ty),(vx,vy),(sx,sy),(svx,svy)=sets
  target=MLP(cfg['hidden']).to(device); th=train(target,torch.tensor(tx),torch.tensor(ty),cfg['epochs'],cfg['batch_size'],cfg['lr'],device); tp=predict(target,torch.tensor(tx),device); vp=predict(target,torch.tensor(vx),device)
  torch.save(target.state_dict(),out/'target_model.pt'); rows=[]; rows += [{'epoch':i+1,'loss':l,'accuracy':a,'split':'target_train'} for i,(l,a) in enumerate(th)]; rows += [{'epoch':i+1,'loss':None,'accuracy':evalacc(tp,ty),'split':'target_train_eval'} for i in range(cfg['epochs'])]; rows += [{'epoch':i+1,'loss':None,'accuracy':evalacc(vp,vy),'split':'target_test_eval'} for i in range(cfg['epochs'])]; pd.DataFrame(rows).to_csv(out/'training_metrics.csv',index=False)
+ fig,ax=plt.subplots(1,2,figsize=(10,4)); ax[0].plot(range(1,len(th)+1),[z[0] for z in th]); ax[0].set(title='Target loss',xlabel='epoch'); ax[1].plot(range(1,len(th)+1),[z[1] for z in th],label='train'); ax[1].axhline(evalacc(vp,vy),ls='--',label='test'); ax[1].legend(); ax[1].set(title='Target accuracy',xlabel='epoch'); fig.tight_layout(); fig.savefig(out/'target_training_curves.png'); plt.close(fig)
  attack_by_n=[]
  for nshadow in ([2,10] if cfg['n_shadow']>=10 else [cfg['n_shadow']]):
   ax=[]; ay=[]
@@ -58,5 +59,7 @@ def main():
   m={'n_shadow':nshadow,'attack_accuracy':accuracy_score(true,pred),'precision':precision_recall_fscore_support(true,pred,average='binary',zero_division=0)[0],'recall':precision_recall_fscore_support(true,pred,average='binary',zero_division=0)[1],'f1':precision_recall_fscore_support(true,pred,average='binary',zero_division=0)[2],'roc_auc':roc_auc_score(true,score) if len(np.unique(true))>1 else .5}; attack_by_n.append(m)
   if nshadow==cfg['n_shadow']: pd.DataFrame({'true':true,'pred':pred,'score':score}).to_csv(out/'attack_predictions.csv',index=False); np.savez(out/'shadow_outputs.npz',probabilities=attack_x,labels=attack_y)
  pd.DataFrame(attack_by_n).to_csv(out/'attack_metrics.csv',index=False); fig,ax=plt.subplots(); ax.plot([0,1],[0,1],'--',label='random 50%');
- if len(score): fpr,tpr,_=roc_curve(true,score); ax.plot(fpr,tpr,label='attack'); ax.legend(); fig.savefig(out/'roc_curve.png'); plt.close(fig); print(json.dumps({'target_train_accuracy':evalacc(tp,ty),'target_test_accuracy':evalacc(vp,vy),'attack':attack_by_n,'seconds':time.time()-t},indent=2))
+ if len(score): fpr,tpr,_=roc_curve(true,score); ax.plot(fpr,tpr,label='attack'); ax.legend(); fig.savefig(out/'roc_curve.png'); plt.close(fig)
+ cm=confusion_matrix(true,pred); fig,ax=plt.subplots(); ax.imshow(cm,cmap='Blues'); ax.set(xlabel='predicted',ylabel='true',title='Membership confusion matrix'); [ax.text(j,i,str(cm[i,j]),ha='center',va='center') for i in range(2) for j in range(2)]; fig.tight_layout(); fig.savefig(out/'attack_confusion_matrix.png'); plt.close(fig)
+ print(json.dumps({'target_train_accuracy':evalacc(tp,ty),'target_test_accuracy':evalacc(vp,vy),'attack':attack_by_n,'seconds':time.time()-t},indent=2))
 if __name__=='__main__': main()
