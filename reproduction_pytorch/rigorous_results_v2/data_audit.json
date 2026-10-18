@@ -1,0 +1,9 @@
+{
+  "target_test_source": "MNIST test",
+  "shadow_source": "MNIST train remainder",
+  "seeds": [
+    21312,
+    21313,
+    21314
+  ]
+}

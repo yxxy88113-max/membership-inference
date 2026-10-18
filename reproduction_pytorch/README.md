@@ -32,3 +32,11 @@ python rigorous_experiment.py --config config.json \
 ```
 
 结果写入 `rigorous_results/controlled_results.csv`、`comparison_table.csv`、`comparison_summary.csv`，并生成目标曲线和影子模型数量对比图。
+
+严格数据版本（官方 MNIST test 作为目标非成员、攻击模型按真实标签分组，并比较三种阈值基线）：
+
+```bash
+python rigorous_experiment_v2.py --config config.json \
+  --data-root results_mnist_10/data --output rigorous_results_v2 \
+  --epochs 20 --seeds 21312,21313,21314
+```
