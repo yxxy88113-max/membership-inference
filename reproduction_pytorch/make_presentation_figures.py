@@ -25,7 +25,7 @@ ax[0].legend(); fig.tight_layout(); fig.savefig(OUT/'fig2_attack_methods.png'); 
 # 3: target generalization gap
 z=df[df.attack_type=='true_label_neural'].groupby('n_shadow')[['target_train_accuracy','target_test_accuracy','generalization_gap']].mean().reset_index(); fig,ax=plt.subplots(figsize=(7,4)); x=np.arange(len(z)); ax.bar(x-.25,z.target_train_accuracy,width=.25,label='train'); ax.bar(x,z.target_test_accuracy,width=.25,label='test'); ax.bar(x+.25,z.generalization_gap,width=.25,label='gap'); ax.set_xticks(x,['2 shadows','10 shadows']); ax.set_ylim(0,1.05); ax.set_title('Target performance and generalization gap'); ax.legend(); fig.tight_layout(); fig.savefig(OUT/'fig3_generalization.png'); plt.close(fig)
 # 4: methodology diagram
-fig,ax=plt.subplots(figsize=(12,3)); ax.axis('off'); boxes=[('MNIST train','目标成员\n影子数据'),('目标模型','784 → 50 tanh → 10'),('概率输出','10 类 softmax'),('攻击模型','按真实数字类别\n判断成员/非成员'),('指标','Accuracy / F1 / ROC-AUC')]; xs=np.linspace(.08,.92,len(boxes))
+fig,ax=plt.subplots(figsize=(12,3)); ax.axis('off'); boxes=[('MNIST train','target members\nshadow data'),('Target model','784 → 50 tanh → 10'),('Probability','10-class softmax'),('Attack models','one model per\ntrue digit class'),('Metrics','Accuracy / F1 / ROC-AUC')]; xs=np.linspace(.08,.92,len(boxes))
 for i,(x,(title,body)) in enumerate(zip(xs,boxes)):
  ax.text(x,.52,title,ha='center',va='center',fontsize=13,weight='bold',bbox=dict(boxstyle='round,pad=.7',facecolor='#d9eaf7',edgecolor='#2b6c99')); ax.text(x,.18,body,ha='center',va='center',fontsize=10)
  if i<len(boxes)-1: ax.annotate('',xy=(xs[i+1]-.08,.52),xytext=(x+.08,.52),arrowprops=dict(arrowstyle='->',lw=2))
